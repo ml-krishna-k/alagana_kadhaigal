@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Precious Memories</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Poppins:wght@300;400;500;600&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: #2c1810;
+            background: linear-gradient(135deg, #fdf2e9 0%, #f8e6d3 25%, #ffe4e1 50%, #fdeef4 75%, #f0f8ff 100%);
+            min-height: 100vh;
+            cursor: none;
+            overflow-x: hidden;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            max-width: 100vw;
+            overflow-x: hidden;
+            font-size: 17px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- Add or update these styles in your <style> tag for iPhone 15 optimization --- */
+
+        /* General mobile-friendly base */
+        html, body {
+            max-width: 100vw;
+            overflow-x: hidden;
+            font-size: 17px;
+            -webkit-font-smoothing: antialiased;
+            background: linear-gradient(135deg, #fdf2e9 0%, #f8e6d3 25%, #ffe4e1 50%, #fdeef4 75%, #f0f8ff 100%);
+        }
+
+        /* Header */
+        .header {
+            padding: 48px 8px 32px;
+        }
+        .header h1 {
+            font-size: 2.1rem;
+            line-height: 1.1;
+            letter-spacing: 1px;
+        }
+        .header .subtitle {
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Container and memory sections */
+        .container {
+            max-width: 100vw;
+            padding: 0 4px;
+        }
+        .memory-section {
+            padding: 18px 6px;
+            margin-bottom: 38px;
+            border-radius: 16px;
+        }
+        .memory-content {
+            flex-direction: column;
+            gap: 16px;
+        }
+        .memory-image-container {
+            width: 100%;
+            border-radius: 14px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+        }
+        .memory-image {
+            height: 170px;
+            border-radius: 14px;
+        }
+        .memory-image img {
+            border-radius: 10px;
+        }
+        .memory-text {
+            width: 100%;
+        }
+        .memory-description {
+            font-size: 1.01rem;
+            padding: 13px 10px 10px;
+            border-radius: 10px;
+        }
+        .memory-description p {
+            font-size: 1.01rem;
+            padding-left: 18px;
+            margin-bottom: 8px;
+        }
+
+        /* Divider and footer */
+        .memory-divider {
+            margin: 22px 0;
+            height: 2px;
+        }
+        .footer {
+            padding: 32px 8px 24px;
+            font-size: 1rem;
+            border-radius: 0 0 16px 16px;
+        }
+        .footer-quote {
+            font-size: 1.1rem;
+        }
+        .footer-author {
+            font-size: 1rem;
+        }
+
+        /* Floating butterflies: smaller and less intrusive */
+        .floating-flowers .flower {
+            font-size: 1.1rem;
+            opacity: 0.5;
+        }
+        .floating-flowers .flower:nth-child(1) { left: 10%; }
+        .floating-flowers .flower:nth-child(2) { left: 35%; }
+        .floating-flowers .flower:nth-child(3) { left: 60%; }
+        .floating-flowers .flower:nth-child(4) { left: 80%; }
+        .floating-flowers .flower:nth-child(5) { left: 90%; }
+
+        /* Hide flower/decoration borders on mobile for clean look */
+        @media (max-width: 600px) {
+            .flower-border { display: none; }
+            .header { padding: 32px 4px 18px; }
+            .header h1 { font-size: 1.3rem; }
+            .footer { font-size: 0.95rem; }
+        }
+
+        /* Responsive: scale up for larger screens */
+        @media (min-width: 700px) {
+            .header h1 { font-size: 3.5rem; }
+            .memory-image { height: 300px; }
+            .memory-description { font-size: 1.15rem; }
+            .footer-quote { font-size: 1.5rem; }
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #ff69b4, #ff1493);
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease;
+            box-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+        }
+
+        .cursor-trail {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            font-size: 16px;
+            animation: trailFade 1s ease-out forwards;
+        }
+
+        @keyframes trailFade {
+            0% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(0.3) rotate(180deg);
+                opacity: 0;
+            }
+        }
+
+        /* Flower Background Pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255, 182, 193, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 192, 203, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(255, 105, 180, 0.08) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        /* Header Styles */
+        .header {
+            text-align: center;
+            padding: 80px 20px 60px;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(15px);
+            border-bottom: 2px solid rgba(255, 182, 193, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '🌸 🌺 🌸 🌻 🌸 🏵️ 🌸 🌺 🌸 🌻 🌸 🏵️';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            width: 100%;
+            font-size: 1.5rem;
+            animation: floatAcross 20s linear infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes floatAcross {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .header h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 4rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #ff69b4, #ff1493, #da70d6, #ba55d3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .header .subtitle {
+            font-size: 1.4rem;
+            color: #8b4513;
+            font-weight: 500;
+            font-style: italic;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Flower decorations around header */
+        .flower-border {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            opacity: 0.7;
+            animation: gentleSway 3s ease-in-out infinite;
+        }
+
+        .flower-border.left {
+            left: 5%;
+        }
+
+        .flower-border.right {
+            right: 5%;
+        }
+
+        @keyframes gentleSway {
+            0%, 100% { transform: translateY(-50%) rotate(-5deg); }
+            50% { transform: translateY(-50%) rotate(5deg); }
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Memory Section Styles */
+        .memory-section {
+            margin-bottom: 80px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 182, 193, 0.2);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .memory-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 45px rgba(0,0,0,0.15);
+        }
+
+        /* Flower decorations on memory sections */
+        .memory-section::before {
+            content: '🌸';
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.8rem;
+            opacity: 0.6;
+            animation: rotate 10s linear infinite;
+        }
+
+        .memory-section:nth-child(even)::before {
+            content: '🌺';
+            left: 15px;
+            right: auto;
+            animation: rotate 10s linear infinite reverse;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .memory-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Enhanced Image Styles */
+        .memory-image-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .memory-image-container::before {
+            content: '🌸 🌺 🌻 🏵️';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            text-align: center;
+            font-size: 1.2rem;
+            z-index: 2;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .memory-image-container:hover::before {
+            opacity: 0.8;
+        }
+
+        .memory-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 20px;
+            background: linear-gradient(45deg, #fdf2e9, #f8e6d3, #ffe4e1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #8b4513;
+            font-size: 1.3rem;
+            font-weight: 500;
+            transition: transform 0.3s ease;
+        }
+
+        .memory-image:hover {
+            transform: scale(1.02);
+        }
+
+        .memory-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+        }
+
+        /* Text Content */
+        .memory-text {
+            flex: 1;
+        }
+
+        .memory-description {
+            font-size: 1.1rem;
+            line-height: 1.9;
+            color: #4a2c2a;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 30px;
+            border-radius: 18px;
+            border: 1px solid rgba(255, 182, 193, 0.3);
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .memory-description::before {
+            content: '🌸 🌺 🌸';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+        }
+
+        .memory-description p {
+            margin-bottom: 12px;
+            padding-left: 25px;
+            position: relative;
+            font-weight: 500;
+        }
+
+        .memory-description p::before {
+            content: '🌼';
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 1em;
+        }
+
+        .memory-description p:nth-child(2n)::before {
+            content: '🌸';
+        }
+
+        .memory-description p:nth-child(3n)::before {
+            content: '🌺';
+        }
+
+        .memory-description p:nth-child(4n)::before {
+            content: '🌻';
+        }
+
+        /* Memory Divider */
+        .memory-divider {
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #ff69b4, #ff1493, #da70d6, transparent);
+            margin: 50px 0;
+            border-radius: 2px;
+            position: relative;
+        }
+
+        .memory-divider::before {
+            content: '🌸';
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 5px;
+            border-radius: 50%;
+            font-size: 1rem;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(15px);
+            border-top: 2px solid rgba(255, 182, 193, 0.3);
+            margin-top: 80px;
+            position: relative;
+        }
+
+        .footer::before {
+            content: '🌸 🌺 🌻 🏵️ 🌸 🌺 🌻 🏵️ 🌸 🌺 🌻 🏵️';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            width: 100%;
+            font-size: 1.2rem;
+            animation: floatAcross 25s linear infinite reverse;
+            opacity: 0.5;
+        }
+
+        .footer-quote {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.2rem;
+            font-style: italic;
+            background: linear-gradient(45deg, #ff69b4, #ff1493, #da70d6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-author {
+            font-size: 1.1rem;
+            color: #8b4513;
+            font-weight: 500;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Floating Flowers */
+        .floating-flowers {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .flower {
+            position: absolute;
+            font-size: 1.5rem;
+            animation: floatFlower 15s infinite linear;
+            opacity: 0.7;
+        }
+
+        .flower:nth-child(1) { left: 5%; animation-delay: 0s; }
+        .flower:nth-child(2) { left: 15%; animation-delay: -3s; }
+        .flower:nth-child(3) { left: 25%; animation-delay: -6s; }
+        .flower:nth-child(4) { left: 35%; animation-delay: -9s; }
+        .flower:nth-child(5) { left: 45%; animation-delay: -12s; }
+
+        @keyframes floatFlower {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive Design */
+        @media (min-width: 768px) {
+            .header h1 {
+                font-size: 5rem;
+            }
+            
+            .memory-content {
+                flex-direction: row;
+                align-items: center;
+                gap: 40px;
+            }
+            
+            .memory-image-container {
+                width: 45%;
+            }
+            
+            .memory-image {
+                height: 350px;
+            }
+            
+            .memory-text {
+                width: 55%;
+            }
+            
+            .memory-description {
+                font-size: 1.15rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .memory-section {
+                padding: 50px;
+            }
+            
+            .memory-image {
+                height: 400px;
+            }
+            
+            .memory-description {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Mobile cursor fallback */
+        @media (hover: none) {
+            body {
+                cursor: auto;
+            }
+            
+            .cursor {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+
+    <!-- Floating Butterflies -->
+    <div class="floating-flowers">
+        <div class="flower">🦋</div>
+        <div class="flower">🦋</div>
+        <div class="flower">🦋</div>
+        <div class="flower">🦋</div>
+        <div class="flower">🦋</div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="flower-border left">🌸</div>
+        <div class="flower-border right">🌺</div>
+        <h1>Alagana kadhaigal</h1>
+        <p class="subtitle">A collection of moments that matter most ✨</p>
+    </header>
+
+    <div class="container">
+        <!-- Memory 1 -->
+        <section class="memory-section">
+            <div class="memory-content">
+                <div class="memory-image-container">
+                    <div class="memory-image">
+                        <img src="r68d-view-Rikkis.jpg" alt="">
+                    </div>
+                </div>
+                <div class="memory-text">
+                    <div class="memory-description">
+                        <p>This was the first place we went together, and it is our freq spot 3 vatti poyachu</p>
+                        <p>Full of memories, laughter, and stories to remember.</p>
+                        <p>jolly-a irundhudhu, every moment felt right,</p>
+                        <p>Anniku dhaan life-la one of the best memoryyy.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="memory-divider"></div>
+
+        <!-- Memory 2 -->
+        <section class="memory-section">
+            <div class="memory-content">
+                <div class="memory-image-container">
+                    <div class="memory-image">
+                        <img src="p183839-1712064989660c09dde29ce.webp" alt="">
+                    </div>
+                </div>
+                <div class="memory-text">
+                    <div class="memory-description">
+                        <p>second time veliya clg bus la, Bessy ponom</p>
+                        <p>Evalo problems irundhaalum, nee ellathayum thaandi vantha.</p>
+                        <p>Beach la popcorn saapta moment romba special-a irundhuchu</p>
+                        <p>Moon man ponom — sema place, sema memory ahh irundhuchu.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="memory-divider"></div>
+
+        <!-- Memory 3 -->
+        <section class="memory-section">
+            <div class="memory-content">
+                <div class="memory-image-container">
+                    <div class="memory-image">
+                        <img src="p16414-164138288861d583e836f81.webp" alt="">
+                    </div>
+                </div>
+                <div class="memory-text">
+                    <div class="memory-description">
+                        <p>Indha edam peru marandha kooda, andha sweet memories epdi marakkalaam?</p>
+                        <p>Annike nee first time late ah vantha — enaku romba advantage aiduchu hehee!</p>
+                        <p>Gudu gudu nu odi poi unakku oru cute gift vaangi kuduthen — adhuku un reaction heart-ku close ahh iruku.</p>
+                        <p>Avalo neram pesunom cafe-la, aana andha theru la pesuna moment dhaan all-time favourite!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="memory-divider"></div>
+
+        <!-- Memory 4 -->
+        <section class="memory-section">
+            <div class="memory-content">
+                <div class="memory-image-container">
+                    <div class="memory-image">
+                        <img src="Aerohub-Mall_-Side-view-Best-Shopping-Mall-In-Chennai.jpg" alt="">
+                    </div>
+                </div>
+                <div class="memory-text">
+                    <div class="memory-description">
+                        <p>Aerohub ponom la — evalo special memory dhaan!</p>
+                        <p>First time neeyum naanum orae bike la — avalothoram pa sema feel.</p>
+                        <p>Anga poi KFC la saapta scene ippo vara mind-la oditrukku,</p>
+                        <p>last ahh antha malai ku polam nu nenachacdhuu — athuvum oru cute memory-a marakave mudiyadhu.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="memory-divider"></div>
+
+        <!-- Memory 5 -->
+        <section class="memory-section">
+            <div class="memory-content">
+                <div class="memory-image-container">
+                    <div class="memory-image">
+                        <img src="p96725-169037683364c11a81ae913.webp" alt="">
+                    </div>
+                </div>
+                <div class="memory-text">
+                    <div class="memory-description">
+                        <p>Anniku old potion house ponathu la, evalo memories create achuuu.</p>
+                        <p>Oru puthu experience la, unaku slipper potu utathathu lam awwwwwww.</p>
+                        <p>Ennatha nadandhalum la, ipo regret panninaalum seri,</p>
+                        <p>Still namma romba happy irukom, adhu than best moment.....</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="memory-divider"></div>
+
+        <!-- Memory 6 -->
+        <section class="memory-section">
+            <div class="memory-content">
+                <div class="memory-image-container">
+                    <div class="memory-image">
+                        <img src="DSC_3841-1-1030x683.jpg" alt="">
+                    </div>
+                </div>
+                <div class="memory-text">
+                    <div class="memory-description">
+                        <p>Yen life la ithu dhaan best birthday pa, night lam nee call panni cake vetuna moment vera level</p>
+                        <p>Nama cafe pona feel, naan flower vangikudutha apo un reactions still in my eyessssss...</p>
+                        <p>Nee kudutha watch evalo special theriyuma pakaum pothu la antha day apdiyee oru pic mari varuthu</p>
+                        <p>Tq so much madam, innum neraya memories iruku – each one super special.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="memory-divider"></div>
+
+        <!-- Memory 7 -->
+        <section class="memory-section">
+            <div class="memory-content">
+                <div class="memory-image-container">
+                    <div class="memory-image">
+                        <img src="maxresdefault.jpg" alt="">
+                    </div>
+                </div>
+                <div class="memory-text">
+                    <div class="memory-description">
+                        <p>Namba Vandalur zoo onna ponathu lam sema jolly ah irunthuchu,</p>
+                        <p>First half konjam bore ah irunthalum, naan kolandhai mathiri aagitten aproma..</p>
+                        <p>Nee "slippers hurt aaguthu" nu sonnapothu, yen slipper potu nadandhadhu highlight irunchu.</p>
+                        <p>At last pakkanum nu nenacha ellam nambala thedi vandhuduchu la.</p>
+                        <p>Antha aquarium la naan chandramukhi ahh marii pona scene marakama mudiyathu – innum neraya special moments iruku!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p class="footer-quote">"We don't remember days, we remember moments." 🌸</p>
+        <p class="footer-author">— us ✨</p>
+    </footer>
+
+    <script>
+        // Custom Cursor with Butterfly Trail
+        const cursor = document.querySelector('.cursor');
+        const butterflies = ['🦋', '🦋', '🦋', '🦋', '🦋'];
+        let mouseX = 0, mouseY = 0;
+
+        // Update cursor position
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            cursor.style.left = mouseX + 'px';
+            cursor.style.top = mouseY + 'px';
+            
+            // Create butterfly trail (less frequent)
+            if (Math.random() < 0.3) createButterflyTrail(mouseX, mouseY);
+        });
+
+        // Create butterfly trail effect
+        function createButterflyTrail(x, y) {
+            const trail = document.createElement('div');
+            trail.className = 'cursor-trail';
+            trail.style.left = x + 'px';
+            trail.style.top = y + 'px';
+            trail.textContent = butterflies[Math.floor(Math.random() * butterflies.length)];
+            
+            document.body.appendChild(trail);
+            
+            // Remove trail element after animation
+            setTimeout(() => {
+                if (trail.parentNode) {
+                    trail.parentNode.removeChild(trail);
+                }
+            }, 1000);
+        }
+
+        // Cursor scale on click
+        document.addEventListener('mousedown', () => {
+            cursor.style.transform = 'scale(0.8)';
+        });
+
+        document.addEventListener('mouseup', () => {
+            cursor.style.transform = 'scale(1)';
+        });
+
+        // Hide cursor when leaving window
+        document.addEventListener('mouseleave', () => {
+            cursor.style.opacity = '0';
+        });
+
+        document.addEventListener('mouseenter', () => {
+            cursor.style.opacity = '1';
+        });
+    </script>
+</body>
+</html>
